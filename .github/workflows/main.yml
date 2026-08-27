@@ -1,4 +1,4 @@
-name: Windows Runner Test
+name: Windows Runner USA Check
 
 on:
   workflow_dispatch:
@@ -8,7 +8,26 @@ jobs:
     runs-on: windows-2022
 
     steps:
-      - name: Test Windows
+      - name: Check Windows
+        shell: powershell
         run: |
-          echo Windows Runner OK
-          systeminfo
+          Write-Host "===== WINDOWS ====="
+          Write-Host "Computer: $env:COMPUTERNAME"
+          Write-Host "User: $env:USERNAME"
+          Write-Host "OS:"
+          (Get-CimInstance Win32_OperatingSystem).Caption
+
+      - name: Check Public IP
+        shell: powershell
+        run: |
+          $ip = Invoke-RestMethod "https://api.ipify.org"
+          Write-Host "===== PUBLIC IP ====="
+          Write-Host $ip
+
+          $info = Invoke-RestMethod "https://ipinfo.io/$ip/json"
+
+          Write-Host "===== LOCATION ====="
+          Write-Host "Country: $($info.country)"
+          Write-Host "Region: $($info.region)"
+          Write-Host "City: $($info.city)"
+          Write-Host "Organization: $($info.org)"
