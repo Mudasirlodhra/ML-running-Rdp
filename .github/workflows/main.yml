@@ -1,0 +1,14 @@
+name: Windows Runner Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-2022
+
+    steps:
+      - name: Test Windows
+        run: |
+          echo Windows Runner OK
+          systeminfo
